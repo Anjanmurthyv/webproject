@@ -13,7 +13,7 @@ pipeline {
                 script {
                     gitCheckout(
                         branch: "main",
-                        url: "https://github.com/Anjanmurthyv/java-springboot.git"
+                        url: "https://github.com/Anjanmurthyv/webproject.git"
                     )
                 }
             }
@@ -33,24 +33,7 @@ pipeline {
                 }
             }
         }
-        stage('Static code analysis: Sonarqube'){
-            steps{
-               script{
-                   
-                   def SonarQubecredentialsId = 'sonar-token'
-                   statiCodeAnalysis(SonarQubecredentialsId)
-               }
-            }
-        }
-        stage('Quality Gate Status Check : Sonarqube'){
-            steps{
-               script{
-                   
-                   def SonarQubecredentialsId = 'sonar-token'
-                   QualityGateStatus(SonarQubecredentialsId)
-               }
-            }
-        }
+       
         stage('Maven Build : maven'){
             steps{
                script{
@@ -65,22 +48,6 @@ pipeline {
                    dockerImage = docker.build("${registry}")
              }
           }
-       }
-       stage('Docker Image Scan: trivy') {
-           steps {
-              script {
-            // Define the Docker image to be scanned
-                  def imageName = "${registry}"
-            
-            // Execute Trivy scan on the Docker image
-                  sh "trivy image ${imageName}"
-            }
-          }
-       }
-       stage('Pushing to ECR') {
-           steps {
-               dockerImagePush()
-               }
-            }  
+       } 
     }
 }
