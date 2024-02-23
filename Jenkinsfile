@@ -82,13 +82,5 @@ pipeline {
                dockerImagePush()
                }
             }  
-       stages {
-        stage('Delete Docker Images') {
-            steps {
-                script {
-                    deleteDockerImages()
-                }
-            }
-        }
     }
 }
